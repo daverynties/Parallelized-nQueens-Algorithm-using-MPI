@@ -10,7 +10,6 @@
 int totalSolutions = 0;
 
 int noConflicts(int q[], int n);
-void queens(int q[], int n);
 void staticQueensMPI(int q[], int n);
 
 int main(void) {
@@ -40,20 +39,6 @@ void staticQueensMPI(int board[], int currentRow) {
          board[currentRow] = i;
          if (noConflicts(board, currentRow))
             staticQueensMPI(board, currentRow + 1);
-      }
-   }
-}
-
-void queens(int board[], int currentRow) {
-
-   int i;
-   if (currentRow == N) {
-      totalSolutions++;
-   } else {
-      for (i = 0; i < N; i++) {
-         board[currentRow] = i;
-         if (noConflicts(board, currentRow))
-            queens(board, currentRow + 1);
       }
    }
 }
