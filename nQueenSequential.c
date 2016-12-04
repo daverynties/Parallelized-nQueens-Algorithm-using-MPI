@@ -1,53 +1,56 @@
+/*include when compiling on vs
+#include "stdafx.h"
+#include<iostream> 
+*/
 #include <stdio.h> 
-#include <time.h>
-   //uncomment for visual studio
-   //#include<iostream>
+#include <time.h> 
+
 #define TRUE 1
 #define FALSE 0
-#define N 13
+#define N 8
 
-int counter = 0;
+int totalSolutions = 0;
 
-int placeQueen(int q[], int n);
-void queenLogic(int q[], int n);
+int noConflicts(int q[], int n);
+void queens(int q[], int n);
 
 int main(void) {
    clock_t start, finish, time_in_seconds;
 
    int i;
-   int queen[N];
+   int board[N];
 
    start = clock();
-   queenLogic(queen, 0);
+   queens(board, 0);
    finish = clock();
    unsigned long millis = (finish - start) * 1000 / CLOCKS_PER_SEC;
-   printf("count: %d\ntime: %lu\n\n", counter, millis);
-   //visual studio pause for console viewing upon completion
+   printf("\nTotal Number of Solutions: %d\nRun Time: %lu\n\n", totalSolutions, millis);
+   //uncomment in vs
    //system("pause");
    return 0;
 }
 
-void queenLogic(int qu[], int n) {
+void queens(int board[], int current) {
 
    int i;
-   if (n == N) {
-      counter++;
+   if (current == N) {
+      totalSolutions++;
    } else {
       for (i = 0; i < N; i++) {
-         qu[n] = i;
-         if (placeQueen(qu, n))
-            queenLogic(qu, n + 1);
+         board[current] = i;
+         if (noConflicts(board, current))
+            queens(board, current + 1);
       }
    }
 }
 
-int placeQueen(int q[], int n) {
+int noConflicts(int board[], int current) {
 
    int i;
-   for (i = 0; i < n; i++) {
-      if (q[i] == q[n])
+   for (i = 0; i < current; i++) {
+      if (board[i] == board[current])
          return FALSE; // same column
-      if (abs(q[i] - q[n]) == (n - i))
+      if (abs(board[i] - board[current]) == (current - i))
          return FALSE; // same diagonal
    }
    return TRUE;
