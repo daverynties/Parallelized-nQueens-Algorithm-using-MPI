@@ -1,17 +1,18 @@
-//#include "stdafx.h"
-//#include <iostream>
+/*include when running vs
+#include "stdafx.h"
+#include<iostream> 
+*/
 #include <stdio.h> 
-#include <time.h>
+#include <time.h> 
 
 #define TRUE 1
 #define FALSE 0
-#define N 13
+#define N 8
 
 int totalSolutions = 0;
 
 int noConflicts(int q[], int n);
 void queens(int q[], int n);
-void staticQueensMPI(int q[], int n);
 
 int main(void) {
    clock_t start, finish, time_in_seconds;
@@ -20,51 +21,36 @@ int main(void) {
    int board[N];
 
    start = clock();
-   staticQueensMPI(board, 1);
+   queens(board, 0);
    finish = clock();
    unsigned long millis = (finish - start) * 1000 / CLOCKS_PER_SEC;
-   printf("count: %d\ntime: %lu\n\n", totalSolutions, millis);
-
+   printf("\nTotal Number of Solutions: %d\nRun Time: %lu\n\n", totalSolutions, millis);
+   //uncomment in vs
    //system("pause");
    return 0;
 }
 
-void staticQueensMPI(int board[], int currentRow) {
+void queens(int board[], int current) {
 
    int i;
-   if (currentRow == N) {
+   if (current == N) {
       totalSolutions++;
    } else {
-      board[0] = 8; //set static for parallelization
       for (i = 0; i < N; i++) {
-         board[currentRow] = i;
-         if (noConflicts(board, currentRow))
-            staticQueensMPI(board, currentRow + 1);
+         board[current] = i;
+         if (noConflicts(board, current))
+            queens(board, current + 1);
       }
    }
 }
 
-void queens(int board[], int currentRow) {
+int noConflicts(int board[], int current) {
 
    int i;
-   if (currentRow == N) {
-      totalSolutions++;
-   } else {
-      for (i = 0; i < N; i++) {
-         board[currentRow] = i;
-         if (noConflicts(board, currentRow))
-            queens(board, currentRow + 1);
-      }
-   }
-}
-
-int noConflicts(int board[], int currentRow) {
-
-   int i;
-   for (i = 0; i < currentRow; i++) {
-      if (board[i] == board[currentRow])
+   for (i = 0; i < current; i++) {
+      if (board[i] == board[current])
          return FALSE; // same column
-      if (abs(board[i] - board[currentRow]) == (currentRow - i))
+      if (abs(board[i] - board[current]) == (current - i))
          return FALSE; // same diagonal
    }
    return TRUE;
