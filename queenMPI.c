@@ -6,7 +6,7 @@
 #define MASTER 0
 #define TRUE 1
 #define FALSE 0
-#define N 13
+#define N 15
 
 int totalSolutions = 0;
 
@@ -25,7 +25,7 @@ int main(int argc, char * argv[]) {
     MPI_Comm_size(MPI_COMM_WORLD, & num_nodes);
 
     if (my_rank != MASTER) {
-        staticQueensMPI(board, 1, my_rank - 1);
+        staticQueensMPI(board, 1, my_rank -1);
         MPI_Send( & totalSolutions, 1, MPI_INT, 0, 0, MPI_COMM_WORLD);
     } else {
         start = MPI_Wtime();
