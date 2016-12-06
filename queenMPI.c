@@ -6,7 +6,7 @@
 #define MASTER 0
 #define TRUE 1
 #define FALSE 0
-#define N 15
+#define N 14
 
 int totalSolutions = 0;
 

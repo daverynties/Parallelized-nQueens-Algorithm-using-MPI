@@ -3,28 +3,31 @@
 #include<iostream> 
 */
 #include <stdio.h> 
-#include <time.h> 
+#include <sys/time.h> 
 
 #define TRUE 1
 #define FALSE 0
-#define N 8
+#define N 14
 
 int totalSolutions = 0;
 
 int noConflicts(int q[], int n);
 void queens(int q[], int n);
+float timedifference_msec(struct timeval start, struct timeval finish);
 
-int main(void) {
-   clock_t start, finish, time_in_seconds;
+int main() {
+   struct timeval start;
+   struct timeval finish;
+   float execution_time;
 
    int i;
    int board[N];
 
-   start = clock();
+   gettimeofday(&start, 0);
    queens(board, 0);
-   finish = clock();
-   unsigned long millis = (finish - start) * 1000 / CLOCKS_PER_SEC;
-   printf("\nTotal Number of Solutions: %d\nRun Time: %lu\n\n", totalSolutions, millis);
+   gettimeofday(&finish, 0);
+   execution_time = timedifference_msec(start, finish);
+   printf("\nTotal Number of Solutions: %d\nRun Time: %fms\n\n", totalSolutions, execution_time);
    //uncomment in vs
    //system("pause");
    return 0;
@@ -54,4 +57,9 @@ int noConflicts(int board[], int current) {
          return FALSE; // same diagonal
    }
    return TRUE;
+}
+
+float timedifference_msec(struct timeval start, struct timeval finish)
+{
+    return (finish.tv_sec - start.tv_sec) * 1000.0f + (finish.tv_usec - start.tv_usec) / 1000.0f;
 }
