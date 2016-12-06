@@ -25,10 +25,9 @@ int main(int argc, char * argv[]) {
     MPI_Comm_size(MPI_COMM_WORLD, & num_nodes);
 
     if (my_rank != MASTER) {
-        staticQueensMPI(board, 1, my_rank);
+        staticQueensMPI(board, 1, my_rank - 1);
         MPI_Send( & totalSolutions, 1, MPI_INT, 0, 0, MPI_COMM_WORLD);
     } else {
-        staticQueensMPI(board, 1, my_rank);
         start = MPI_Wtime();
         for (source = 0; source < num_nodes - 1; source++) {
             int answerFromWorker;
